@@ -10,6 +10,7 @@ let create = document.getElementById("create");
 let deleteModal = document.getElementById("deleteModal");
 let confirmDeleteBtn = document.getElementById("confirmDelete");
 let deleteMessage = document.getElementById("deleteMessage");
+let searchBlock = document.getElementById("searchBlock");
 
 let mood = "create";
 let tmp;
@@ -114,6 +115,7 @@ create.onclick = () => {
         } else {
             dataPro[tmp] = newPro;
             mood = "create";
+            searchBlock.style.display = "grid";
             create.innerHTML = "Create";
             count.style.display = "block";
         }
@@ -217,6 +219,7 @@ function updateData(i) {
 
     count.style.display = "none";
     create.innerHTML = "Update";
+    searchBlock.style.display = "none";
     mood = "update";
     tmp = i;
     scroll({
