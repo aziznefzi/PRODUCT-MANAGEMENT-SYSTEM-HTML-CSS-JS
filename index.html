@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CROUDS - Product Management</title>
+    <!-- Google Fonts: Inter and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="universe"></div>
+
+    <div class="crud-wrapper">
+      <div class="crud">
+        <header class="head">
+          <h1>CRUD</h1>
+          <p>PRODUCT MANAGEMENT SYSTEM</p>
+        </header>
+
+        <main class="inputs">
+          <input id="title" type="text" placeholder="Product Title" />
+          <div class="price-group">
+            <input
+              onkeyup="getTotal()"
+              id="price"
+              type="number"
+              placeholder="Price"
+            />
+            <input
+              onkeyup="getTotal()"
+              id="taxes"
+              type="number"
+              placeholder="Taxes"
+            />
+            <input
+              onkeyup="getTotal()"
+              id="ads"
+              type="number"
+              placeholder="Ads"
+            />
+            <input
+              onkeyup="getTotal()"
+              id="discount"
+              type="number"
+              placeholder="Discount"
+            />
+            <small id="total" class="pulse">0</small>
+          </div>
+          <input id="count" placeholder="Count" type="number" />
+          <input id="category" placeholder="Category" type="text" />
+          <button id="create">Create</button>
+        </main>
+
+        <section class="outputs">
+          <div class="searchBlock">
+            <input
+              onkeyup="searchData(this.value)"
+              id="search"
+              type="text"
+              placeholder="Search products..."
+            />
+            <div class="btn-Search">
+              <button onclick="GetSearchMood(this.id)" id="search-Title">
+                Search By Title
+              </button>
+              <button onclick="GetSearchMood(this.id)" id="Search-Category">
+                Search By Category
+              </button>
+            </div>
+            <div id="deleteAll"></div>
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Price</th>
+                    <th>Taxes</th>
+                    <th>Ads</th>
+                    <th>Discount</th>
+                    <th>Total</th>
+                    <th>Category</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="deleteModal" class="modal">
+      <div class="modal-content">
+        <h3>Confirm Deletion</h3>
+        <p id="deleteMessage">Are you sure you want to delete this product?</p>
+        <div class="modal-btns">
+          <button id="confirmDelete" class="btn-confirm">Delete</button>
+          <button onclick="closeModal()" class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="js.js"></script>
+  </body>
+</html>
