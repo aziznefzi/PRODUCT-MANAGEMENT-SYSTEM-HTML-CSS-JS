@@ -10,6 +10,8 @@ let create = document.getElementById("create");
 let deleteModal = document.getElementById("deleteModal");
 let confirmDeleteBtn = document.getElementById("confirmDelete");
 let deleteMessage = document.getElementById("deleteMessage");
+let updateModal = document.getElementById("updateModal");
+let confirmUpdateBtn = document.getElementById("confirmUpdate");
 let searchBlock = document.getElementById("searchBlock");
 
 let mood = "create";
@@ -100,10 +102,7 @@ create.onclick = () => {
         category: category.value.toLowerCase()
     };
 
-    if (title.value != '' &&
-        price.value != '' &&
-        category.value != '' &&
-        newPro.count < 100) {
+    if (title.value != '' && price.value != '' && category.value != '' && newPro.count < 100) {
         if (mood === "create") {
             if (newPro.count > 1) {
                 for (let i = 0; i < newPro.count; i++) {
@@ -112,18 +111,13 @@ create.onclick = () => {
             } else {
                 dataPro.push(newPro);
             }
+            clearData();
+            localStorage.setItem('Product', JSON.stringify(dataPro));
+            showData();
         } else {
-            dataPro[tmp] = newPro;
-            mood = "create";
-            searchBlock.style.display = "grid";
-            create.innerHTML = "Create";
-            count.style.display = "block";
+            openUpdateModal();
         }
-        clearData();
     }
-
-    localStorage.setItem('Product', JSON.stringify(dataPro));
-    showData();
 };
 
 // Clear Inputs
@@ -145,7 +139,7 @@ function showData() {
     let table = '';
     for (let i = 0; i < dataPro.length; i++) {
         table += `
-     <tr>
+     <tr id="row-${i}">
       <td>${i + 1}</td>
       <td>${dataPro[i].title}</td>
       <td>${dataPro[i].price}</td>
@@ -205,6 +199,54 @@ window.onclick = function(event) {
     if (event.target == deleteModal) {
         closeModal();
     }
+    if (event.target == updateModal) {
+        closeUpdateModal();
+    }
+};
+
+// Update Confirmation Logic
+function openUpdateModal() {
+    updateModal.style.display = "flex";
+}
+
+function closeUpdateModal() {
+    updateModal.style.display = "none";
+}
+
+confirmUpdateBtn.onclick = () => {
+    let newPro = {
+        title: title.value.toLowerCase(),
+        price: price.value,
+        taxes: taxes.value,
+        ads: ads.value,
+        discount: discount.value,
+        total: total.innerHTML,
+        count: count.value,
+        category: category.value.toLowerCase()
+    };
+    
+    dataPro[tmp] = newPro;
+    mood = "create";
+    searchBlock.style.display = "grid";
+    create.innerHTML = "Create";
+    count.style.display = "block";
+    clearData();
+    localStorage.setItem('Product', JSON.stringify(dataPro));
+    showData();
+    closeUpdateModal();
+
+    // Scroll to the updated row and highlight it
+    let updatedRow = document.getElementById(`row-${tmp}`);
+    if (updatedRow) {
+        updatedRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Add a temporary subtle highlight effect
+        let originalBg = updatedRow.style.backgroundColor;
+        updatedRow.style.backgroundColor = 'rgba(216, 67, 21, 0.5)';
+        setTimeout(() => {
+            updatedRow.style.backgroundColor = originalBg;
+        }, 1500);
+    }
 };
 
 // Update
@@ -251,7 +293,7 @@ function searchData(value) {
     for (let i = 0; i < dataPro.length; i++) {
         if (dataPro[i][searchMood].includes(val)) {
             table += `
-            <tr>
+            <tr id="row-${i}">
                 <td>${i + 1}</td>
                 <td>${dataPro[i].title}</td>
                 <td>${dataPro[i].price}</td>
